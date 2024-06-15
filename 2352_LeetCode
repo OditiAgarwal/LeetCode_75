@@ -1,0 +1,59 @@
+Equal row and column
+iven a 0-indexed n x n integer matrix grid, return the number of pairs (ri, cj) such that row ri and column cj are equal.
+
+A row and column pair is considered equal if they contain the same elements in the same order (i.e., an equal array).
+
+ 
+
+Example 1:
+
+
+Input: grid = [[3,2,1],[1,7,6],[2,7,7]]
+Output: 1
+Explanation: There is 1 equal row and column pair:
+- (Row 2, Column 1): [2,7,7]
+
+Java Code solution:
+
+import java.util.HashMap;
+import java.util.Map;
+
+class Solution {
+    public int equalPairs(int[][] grid) {
+        int n = grid.length;
+        int ans = 0;
+
+        Map<String, Integer> row = new HashMap<>();
+        Map<String, Integer> column = new HashMap<>();
+
+        // Row count
+        for (int i = 0; i < n; i++) {
+            StringBuilder sb = new StringBuilder();
+            for (int j = 0; j < n; j++) {
+                sb.append(grid[i][j]).append(",");
+            }
+            String str = sb.toString();
+            row.put(str, row.getOrDefault(str, 0) + 1);
+        }
+
+        // Column count
+        for (int j = 0; j < n; j++) {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < n; i++) {
+                sb.append(grid[i][j]).append(",");
+            }
+            String str = sb.toString();
+            column.put(str, column.getOrDefault(str, 0) + 1);
+        }
+
+        // Calculate the number of equal pairs
+        for (String s : row.keySet()) {
+            if (column.containsKey(s)) {
+                ans += row.get(s) * column.get(s);
+            }
+        }
+
+        return ans;
+    }
+}
+
